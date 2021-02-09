@@ -5,10 +5,10 @@ module Mutations
     argument :image_url, String, required: false
 
     field :item, Types::ItemType, null: true
-    field :errors, [String], null: false
+    field :errors, Types::ValidationErrorsType, null: true
 
     def resolve(title:, description: nil, image_url: nil)
-      check_authentication!
+      # check_authentication!
 
       item = Item.new(
         title: title,
@@ -20,7 +20,7 @@ module Mutations
       if item.save
         { item: item }
       else
-        { errors: item.errors.full_messages }
+        { errors: item.errors }
       end
     end
   end
